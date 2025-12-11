@@ -8,7 +8,7 @@ Play with cUSD on MiniPay, Valora, or any Celo wallet. No email signup required.
 
 ## 🎮 Play Now
 
-**Live App:** [https://chessflip-celo.vercel.app/](https://chessflip-celo.vercel.app/)
+**Live App:** [https://chessflip-celo-mainet.vercel.app/](https://chessflip-celo-mainet.vercel.app/)
 
 **Network:** 🟢 **Celo Mainnet** (REAL MONEY)  
 **Contract:** [`0xEb2b130c0846a2C183b56b49FE472e0D2a87f124`](https://celoscan.io/address/0xEb2b130c0846a2C183b56b49FE472e0D2a87f124)
@@ -26,7 +26,7 @@ Play with cUSD on MiniPay, Valora, or any Celo wallet. No email signup required.
    - Buy directly in MiniPay or Valora
    - Bridge from another network
    - Exchange like Binance, Coinbase
-4. Open [https://chessflip-celo.vercel.app/](https://chessflip-celo.vercel.app/) in MiniPay browser
+4. Open [https://chessflip-celo-mainet.vercel.app/](https://chessflip-celo-mainet.vercel.app/) in MiniPay browser
 
 ⚠️ **This is MAINNET - use real money carefully!**
 
@@ -99,11 +99,40 @@ The app will connect to Celo Sepolia testnet automatically. No configuration nee
 
 ---
 
+## 🎮 Play on Farcaster
+
+**ChessFlip is also available as a Farcaster MiniApp!**
+
+### How to Play in Farcaster
+
+1. **Open Warpcast App** on your mobile device
+2. **Enable MiniApps:**
+   - Go to Settings → Advanced → Mini Apps
+   - Enable "Developer Mode" (if testing)
+3. **Launch ChessFlip:**
+   - Search for "ChessFlip" in MiniApps directory, OR
+   - Enter URL: `https://chessflip-celo-mainet.vercel.app`
+4. **Connect & Play:**
+   - App loads directly in Farcaster
+   - Connect your wallet (Celo network)
+   - Register with your Farcaster username
+   - Start playing!
+
+### Farcaster Features
+- ✅ **Share to Cast:** Share your wins directly to Farcaster
+- ✅ **Haptic Feedback:** Feel every flip and match (mobile)
+- ✅ **Seamless UX:** No browser navigation needed
+- ✅ **Quick Auth:** Authenticate with your Farcaster identity
+
+**Manifest:** [View manifest.json](https://chessflip-celo-mainet.vercel.app/manifest.json)
+
+---
+
 ## 🔗 Links
 
-- **Live App:** [chessflip-celo.vercel.app](https://chessflip-celo.vercel.app/)
-- **Contract on Blockscout:** [View Contract](https://celo-sepolia.blockscout.com/address/0xEb2b130c0846a2C183b56b49FE472e0D2a87f124)
-- **Celo Faucet:** [Get Test cUSD](https://faucet.celo.org/alfajores) *(Select Sepolia)*
+- **Live App:** [chessflip-celo-mainet.vercel.app](https://chessflip-celo-mainet.vercel.app/)
+- **Contract on CeloScan:** [View Contract](https://celoscan.io/address/0xEb2b130c0846a2C183b56b49FE472e0D2a87f124)
+- **Farcaster MiniApp:** Search "ChessFlip" in Warpcast
 - **GitHub:** [Akanimoh12/chessflip-celo](https://github.com/Akanimoh12/chessflip-celo)
 
 ---
@@ -112,8 +141,9 @@ The app will connect to Celo Sepolia testnet automatically. No configuration nee
 
 - **Frontend:** React 18, TypeScript, Vite, Tailwind CSS
 - **Web3:** wagmi v2, RainbowKit, viem
-- **Blockchain:** Celo Sepolia Testnet
+- **Blockchain:** Celo Mainnet
 - **Smart Contract:** Solidity 0.8.24, OpenZeppelin
+- **MiniApp:** Farcaster SDK (@farcaster/miniapp-sdk)
 
 ---
 
@@ -124,8 +154,8 @@ The app will connect to Celo Sepolia testnet automatically. No configuration nee
 - Try disconnecting and reconnecting your wallet
 
 **Transaction failed?**
-- Check you have enough cUSD in your wallet
-- Get test cUSD from [Celo Faucet](https://faucet.celo.org/alfajores)
+- Check you have enough cUSD in your wallet (REAL cUSD on mainnet)
+- Ensure you have approved cUSD spending for the contract
 
 **Claim button disabled?**
 - You need to complete at least one game first
@@ -142,4 +172,4 @@ MIT License - feel free to fork and build upon this project!
 
 ---
 
-**Ready to play?** 🎮 [Launch ChessFlip Now →](https://chessflip-celo.vercel.app/)
+**Ready to play?** 🎮 [Launch ChessFlip Now →](https://chessflip-celo-mainet.vercel.app/)

@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #000000;
+    --color-secondary: #FFFEF9;
+    --color-accent: #F5F4EF;
+    --color-brand: #FF6B9D;
+    --border-width: 3px;
+    --border-radius: 4px;
+    --shadow-offset: 4px;
+  }
+
+  * {
+    @apply border-primary;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-secondary text-primary font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(0, 0, 0, 0.01) 1px, transparent 1px),
+      radial-gradient(circle at 75% 75%, rgba(0, 0, 0, 0.01) 1px, transparent 1px);
+    background-size: 4px 4px;
+    background-position: 0 0, 2px 2px;
+  }
+
+  h1 {
+    @apply text-h1 font-sans;
+  }
+
+  h2 {
+    @apply text-h2 font-sans;
+  }
+
+  h3 {
+    @apply text-h3 font-sans;
+  }
+
+  h4 {
+    @apply text-h4 font-sans;
+  }
+
+  p {
+    @apply text-body;
+  }
+
+  a {
+    @apply font-medium transition-colors;
+  }
+
+  button {
+    @apply font-medium;
+  }
+
+  code,
+  pre {
+    @apply font-mono;
+  }
+}
+
+@layer components {
+  .btn-base {
+    @apply inline-flex items-center justify-center px-sm py-xs border-3 border-primary bg-secondary text-primary font-medium transition-all duration-150 ease-in-out rounded-brutalist hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-x-0 disabled:hover:translate-y-0;
+  }
+
+  .btn-primary {
+    @apply btn-base shadow-brutalist;
+  }
+
+  .btn-secondary {
+    @apply btn-base bg-primary text-secondary shadow-brutalist;
+  }
+
+  .card-base {
+    @apply border-3 border-primary bg-secondary rounded-brutalist;
+  }
+
+  .card-elevated {
+    @apply card-base shadow-brutalist;
+  }
+
+  .card-elevated-lg {
+    @apply card-base shadow-brutalist-lg;
+  }
+
+  .input-base {
+    @apply px-md py-sm border-3 border-primary bg-secondary text-primary rounded-brutalist placeholder:text-primary/40 focus:outline-none focus:shadow-brutalist transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+}
+
+/* Smooth transitions */
+button,
+input,
+select {
+  @apply transition-all duration-200;
+}
+
+/* Focus styles */
+button:focus,
+input:focus,
+select:focus {
+  @apply outline-none;
+}
+

@@ -1,0 +1,27 @@
+{
+  "miniapp": {
+    "version": "1",
+    "name": "ChessFlip",
+    "iconUrl": "https://chessflip-celo-mainet.vercel.app/icon-1024.png",
+    "homeUrl": "https://chessflip-celo-mainet.vercel.app/lobby",
+    "splashImageUrl": "https://chessflip-celo-mainet.vercel.app/splash-200.png",
+    "splashBackgroundColor": "#1a1a1a",
+    "subtitle": "Earn cUSD playing chess memory",
+    "description": "Match 6 pairs of chess pieces and earn cUSD rewards on Celo. Play for just 0.001 cUSD per game and compete on the global leaderboard.",
+    "primaryCategory": "games",
+    "tags": [
+      "gaming",
+      "celo",
+      "blockchain",
+      "memory-game",
+      "earn"
+    ],
+    "ogTitle": "ChessFlip - Chess Memory Game",
+    "ogDescription": "Match chess pieces, earn cUSD rewards on Celo. Play for 0.001 cUSD per game.",
+    "ogImageUrl": "https://chessflip-celo-mainet.vercel.app/og-image.png",
+    "heroImageUrl": "https://chessflip-celo-mainet.vercel.app/og-image.png",
+    "requiredChains": [
+      "eip155:42220"
+    ]
+  }
+}

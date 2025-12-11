@@ -7,6 +7,7 @@ import { X, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { Icon } from '@/components/atoms/Icon';
 import { chessFlipAbi } from '@/abi/chessFlip';
 import { cn } from '@/utils/cn';
+import { useFarcasterAuth } from '@/hooks/useFarcasterAuth';
 
 interface RegistrationModalProps {
   isOpen: boolean;
@@ -22,6 +23,9 @@ export const RegistrationModal = ({
   const [username, setUsername] = useState('');
   const [validationError, setValidationError] = useState<string | null>(null);
   const contractAddress = import.meta.env.VITE_CHESSFLIP_CONTRACT_ADDRESS as Address | undefined;
+  
+  // Farcaster authentication
+  const { user: farcasterUser } = useFarcasterAuth();
 
   const {
     data: hash,
@@ -48,6 +52,15 @@ export const RegistrationModal = ({
     
     return null;
   };
+
+  // Auto-fill username from Farcaster
+  useEffect(() => {
+    if (farcasterUser && !username) {
+      console.log('Auto-filling username from Farcaster:', farcasterUser.username);
+      setUsername(farcasterUser.username);
+      setValidationError(validateUsername(farcasterUser.username));
+    }
+  }, [farcasterUser, username]);
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -174,6 +187,28 @@ export const RegistrationModal = ({
                 ⚠️ MAINNET: This uses REAL cUSD on Celo Mainnet
               </p>
             </div>
+
+            {/* Farcaster user badge */}
+            {farcasterUser && (
+              <div className="p-3 bg-purple-100 border-3 border-purple-600 rounded-brutalist">
+                <div className="flex items-center gap-2">
+                  {farcasterUser.pfpUrl && (
+                    <img 
+                      src={farcasterUser.pfpUrl} 
+                      alt="Profile" 
+                      className="w-8 h-8 rounded-full border-2 border-purple-600"
+                    />
+                  )}
+                  <div className="flex-1">
+                    <p className="text-sm font-bold text-purple-700">
+                      Logged in as <strong>@{farcasterUser.username}</strong> on Farcaster
+                    </p>
+                    <p className="text-xs text-purple-600">{farcasterUser.displayName}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <p className="text-sm text-primary/70">
               Choose a unique username to start playing. This cannot be changed later.
             </p>
@@ -189,8 +224,11 @@ export const RegistrationModal = ({
                   value={username}
                   onChange={handleUsernameChange}
                   placeholder="your_username"
-                  disabled={isProcessing}
-                  className={cn(validationError && 'border-red-500')}
+                  disabled={isProcessing || !!farcasterUser}
+                  className={cn(
+                    validationError && 'border-red-500',
+                    farcasterUser && 'bg-purple-50 border-purple-300'
+                  )}
                   maxLength={20}
                   autoComplete="off"
                   autoFocus

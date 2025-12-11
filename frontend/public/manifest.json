@@ -1,0 +1,11 @@
+{
+  "name": "ChessFlip",
+  "description": "Chess memory game on Celo. Match 6 pairs of chess pieces, earn cUSD rewards. Pay 0.001 cUSD per game.",
+  "iconUrl": "https://chessflip-celo.vercel.app/icon-512.png",
+  "splashImageUrl": "https://chessflip-celo.vercel.app/splash-1920x1080.png",
+  "splashBackgroundColor": "#1a1a1a",
+  "url": "https://chessflip-celo.vercel.app",
+  "homeUrl": "https://chessflip-celo.vercel.app/lobby",
+  "requiredChains": [42220],
+  "version": "1.0.0"
+}

@@ -8,6 +8,8 @@ import { Badge } from '@/components/atoms/Badge';
 import { Navbar } from '@/components/organisms/Navbar';
 import { Trophy, ArrowLeft, RotateCcw } from 'lucide-react';
 import { chessFlipAbi } from '@/abi/chessFlip';
+import { ShareToFarcaster } from '@/components/molecules/ShareToFarcaster';
+import { triggerHaptic } from '@/utils/farcaster';
 import type { Address } from 'viem';
 
 const contractAddress = import.meta.env.VITE_CHESSFLIP_CONTRACT_ADDRESS as Address;
@@ -78,6 +80,7 @@ export function GamePage() {
   useEffect(() => {
     if (matches === 6 && !isGameWon && !isSubmittingResult) {
       setIsGameWon(true);
+      triggerHaptic('heavy'); // Haptic feedback for game win
       // Submit win result to contract
       if (gameId && contractAddress) {
         setIsSubmittingResult(true);
@@ -114,6 +117,9 @@ export function GamePage() {
       return;
     }
 
+    // Haptic feedback on card flip
+    triggerHaptic('light');
+
     const newFlippedCards = [...flippedCards, id];
     setFlippedCards(newFlippedCards);
 
@@ -133,6 +139,7 @@ export function GamePage() {
 
       if (firstCard?.piece === secondCard?.piece) {
         // Match found!
+        triggerHaptic('medium'); // Haptic feedback for match
         setTimeout(() => {
           setCards(cards.map(card =>
             newFlippedCards.includes(card.id)
@@ -264,24 +271,34 @@ export function GamePage() {
                 </p>
               </div>
               
-              <div className="flex gap-3">
-                <Button
-                  variant="brand"
-                  size="lg"
-                  onClick={() => navigate('/lobby')}
-                  className="flex-1"
-                >
-                  Back to Lobby
-                </Button>
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  onClick={handleRestart}
-                  className="flex-1"
-                >
-                  <RotateCcw className="w-4 h-4 mr-2" />
-                  Play Again
-                </Button>
+              <div className="flex flex-col gap-3">
+                <div className="flex gap-3">
+                  <Button
+                    variant="brand"
+                    size="lg"
+                    onClick={() => navigate('/lobby')}
+                    className="flex-1"
+                  >
+                    Back to Lobby
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    onClick={handleRestart}
+                    className="flex-1"
+                  >
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    Play Again
+                  </Button>
+                </div>
+                
+                {/* Share button */}
+                <div className="flex justify-center pt-2 border-t-2 border-primary/20">
+                  <ShareToFarcaster 
+                    type="win" 
+                    data={{ score: 10 }} 
+                  />
+                </div>
               </div>
             </CardContent>
           </Card>

@@ -9,6 +9,7 @@ import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from '@/compo
 import { Icon } from '@/components/atoms/Icon';
 import { ArrowRightCircle, Coins, RefreshCcw } from 'lucide-react';
 import { usePlayer } from '@/hooks/usePlayer';
+import { useFarcasterAuth } from '@/hooks/useFarcasterAuth';
 import { chessFlipAbi } from '@/abi/chessFlip';
 import { CUSD_ADDRESSES } from '@/config/celo';
 
@@ -56,6 +57,9 @@ export const LobbyPage = () => {
     winRate,
     refetch,
   } = usePlayer();
+
+  // Farcaster authentication
+  const { user: farcasterUser } = useFarcasterAuth();
 
   // Get last completed game ID from localStorage - refresh on player data update
   useEffect(() => {
@@ -295,6 +299,33 @@ export const LobbyPage = () => {
                   : 'Create your username to unlock matches and rewards.'}
               </p>
             </header>
+
+            {/* Farcaster Profile Card */}
+            {farcasterUser && (
+              <Card variant="default" className="border-purple-600 bg-purple-50/50">
+                <CardHeader>
+                  <div className="flex items-center gap-4">
+                    {farcasterUser.pfpUrl && (
+                      <img 
+                        src={farcasterUser.pfpUrl} 
+                        alt="Farcaster Profile"
+                        className="w-16 h-16 rounded-full border-3 border-purple-600"
+                      />
+                    )}
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="text-xl font-bold text-primary">{farcasterUser.displayName}</h3>
+                        <Badge variant="brand" size="sm" className="bg-purple-600">
+                          Farcaster
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-primary/70">@{farcasterUser.username}</p>
+                      <p className="text-xs text-primary/60 mt-1">FID: {farcasterUser.fid}</p>
+                    </div>
+                  </div>
+                </CardHeader>
+              </Card>
+            )}
 
             <Card variant="default" className="border-primary">
               <CardHeader className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">

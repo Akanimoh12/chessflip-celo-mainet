@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useBlockNumber, usePublicClient } from 'wagmi';
+import { useBlockNumber, usePublicClient, useAccount } from 'wagmi';
 import { Navbar } from '@/components/organisms/Navbar';
-import { WalletConnectButton } from '@/components/molecules';
+import { WalletConnectButton, ShareToFarcaster } from '@/components/molecules';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/atoms/Card';
 import { Badge } from '@/components/atoms/Badge';
 import { Skeleton } from '@/components/atoms/Skeleton';
@@ -41,14 +41,26 @@ interface CachedLeaderboard {
 
 export function LeaderboardPage() {
   const publicClient = usePublicClient();
+  const { address } = useAccount();
   const [players, setPlayers] = useState<PlayerData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [registeredAddresses, setRegisteredAddresses] = useState<Address[]>([]);
   const [lastFetchedBlock, setLastFetchedBlock] = useState<bigint>(0n);
+  const [userRank, setUserRank] = useState<number | null>(null);
 
   
   // Get current block number - but don't watch continuously
   useBlockNumber({ watch: false });
+
+  // Calculate user's rank whenever players or address changes
+  useEffect(() => {
+    if (address && players.length > 0) {
+      const rank = players.findIndex(p => p.address.toLowerCase() === address.toLowerCase()) + 1;
+      setUserRank(rank > 0 ? rank : null);
+    } else {
+      setUserRank(null);
+    }
+  }, [address, players]);
 
   // Load from cache on mount for instant display
   useEffect(() => {
@@ -431,6 +443,19 @@ export function LeaderboardPage() {
             )}
           </CardContent>
         </Card>
+
+        {/* Share Button - Show if user is in top 10 */}
+        {userRank && userRank <= 10 && (
+          <div className="mt-6 flex flex-col items-center gap-3">
+            <p className="text-sm text-primary/70">
+              You're ranked <strong className="text-brand">#{userRank}</strong> on the leaderboard! 🎉
+            </p>
+            <ShareToFarcaster 
+              type="leaderboard" 
+              data={{ rank: userRank }} 
+            />
+          </div>
+        )}
 
         {/* Info Card */}
         <Card variant="flat" className="mt-8 bg-primary/5">

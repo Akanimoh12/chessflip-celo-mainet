@@ -6,13 +6,16 @@ import { WagmiProvider } from 'wagmi';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { Toaster } from 'react-hot-toast';
 import { wagmiConfig } from './config/celo';
+import { initializeFarcasterSDK } from './config/farcaster';
 import App from './App';
 import '@rainbow-me/rainbowkit/styles.css';
 import './index.css';
 
 const queryClient = new QueryClient();
 
-createRoot(document.getElementById('root')!).render(
+// Initialize Farcaster SDK after render
+const root = createRoot(document.getElementById('root')!);
+root.render(
   <React.StrictMode>
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
@@ -44,4 +47,10 @@ createRoot(document.getElementById('root')!).render(
     </WagmiProvider>
   </React.StrictMode>,
 );
+
+// CRITICAL: Notify Farcaster that app is ready to display
+// Without this, the MiniApp will show infinite loading
+setTimeout(() => {
+  initializeFarcasterSDK();
+}, 100);
 

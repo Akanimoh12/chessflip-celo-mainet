@@ -5,6 +5,7 @@ import {
   valoraWallet,
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
+import { farcasterMiniApp } from "@farcaster/miniapp-wagmi-connector";
 import { celo as celoMainnet } from "viem/chains";
 import { createConfig, http } from "wagmi";
 import { defineChain } from "viem";
@@ -68,11 +69,21 @@ const miniPayWallet = (options: Parameters<typeof walletConnectWallet>[0]) => {
   };
 };
 
+// Farcaster MiniApp connector
+const farcasterWallet = () => ({
+  id: "farcaster",
+  name: "Farcaster",
+  iconUrl: "https://warpcast.com/apple-touch-icon.png",
+  iconBackground: "#8A63D2",
+  createConnector: farcasterMiniApp,
+});
+
 const walletGroups = connectorsForWallets(
   [
     {
       groupName: "Recommended",
       wallets: [
+        farcasterWallet,  // Farcaster MiniApp - first for priority in MiniApp
         miniPayWallet,
         valoraWallet,
         metaMaskWallet,

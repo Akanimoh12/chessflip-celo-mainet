@@ -1,4 +1,9 @@
 {
+  "accountAssociation": {
+    "header": "eyJmaWQiOjExNjgxNTgsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhiQjFiMTZlQzRCM0YwMTE0NDllNDk0Q2M5OTkxNEFiNjJjMzdBODQ5In0",
+    "payload": "eyJkb21haW4iOiJjaGVzc2ZsaXAtY2Vsby1tYWluZXQudmVyY2VsLmFwcCJ9",
+    "signature": "w0Vy4+FBW9JL+tgeyNseJ4d9MLaGMjvV6LAFFdR72T9bMJd9tHbJRWPgGNOCPyJvxtQOOGn4WW5xDLKJypehlBs="
+  },
   "miniapp": {
     "version": "1",
     "name": "ChessFlip",

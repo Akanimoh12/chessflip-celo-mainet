@@ -100,7 +100,7 @@ export const Footer = () => {
             </p>
             <div className="flex flex-wrap items-center gap-3">
               <Badge variant="brand" size="sm">
-                Alfajores Testnet
+                🟢 Celo Mainnet
               </Badge>
               <Badge variant="secondary" size="sm">
                 v1.0.0
@@ -152,12 +152,12 @@ export const Footer = () => {
             <p>Built on Celo with cUSD</p>
             <span className="hidden sm:inline">•</span>
             <a
-              href="https://celoscan.io"
+              href="https://celoscan.io/address/0xEb2b130c0846a2C183b56b49FE472e0D2a87f124"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-brand transition-colors"
             >
-              View on CeloScan
+              View Contract on CeloScan
             </a>
           </div>
 
@@ -181,7 +181,7 @@ export const Footer = () => {
         {/* Additional Info Bar */}
         <div className="mt-8 pt-6 border-t-2 border-primary/10 text-center">
           <p className="text-xs text-primary/50">
-            ChessFlip is a decentralized application. Always verify contract addresses and use testnet funds for testing.
+            ⚠️ ChessFlip runs on Celo Mainnet with REAL cUSD. Always verify contract addresses. Only play with funds you can afford to lose.
           </p>
         </div>
       </div>

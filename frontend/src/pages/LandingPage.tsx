@@ -77,7 +77,11 @@ export const LandingPage = () => {
     },
     {
       question: 'What do I need to start playing?',
-      answer: 'Just 0.001 cUSD per game plus a tiny amount of CELO for transaction fees. That\'s it!',
+      answer: 'Just 0.001 cUSD per game plus a tiny amount of CELO for transaction fees. This is REAL money on Celo Mainnet!',
+    },
+    {
+      question: 'Is this testnet or mainnet?',
+      answer: 'ChessFlip runs on Celo Mainnet. This means you use REAL cUSD, not test tokens. Only play with funds you can afford to lose.',
     },
   ];
 
@@ -99,14 +103,17 @@ export const LandingPage = () => {
           <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 grid gap-12 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               <Badge variant="brand" size="md" className="mx-auto lg:mx-0 w-fit font-semibold">
-                Built for Celo & MiniPay
+                🟢 Live on Celo Mainnet
               </Badge>
               <h1 className="text-4xl md:text-6xl font-bold leading-tight">
                 Match Chess Pieces.<br />Win Real cUSD.
               </h1>
               <p className="text-lg sm:text-xl md:text-2xl text-primary/80 max-w-2xl mx-auto lg:mx-0 font-medium">
-                Play memory matching games, earn crypto rewards. You control every transaction.
+                Play memory matching games, earn crypto rewards on Celo Mainnet. You control every transaction.
               </p>
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 border-3 border-yellow-600 rounded-brutalist">
+                <span className="text-yellow-700 font-bold text-sm">⚠️ REAL MONEY: Uses actual cUSD on mainnet</span>
+              </div>
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 {isConnected ? (
                   <Button

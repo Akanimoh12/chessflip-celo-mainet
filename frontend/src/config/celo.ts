@@ -5,9 +5,13 @@ import {
   valoraWallet,
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
-import { celo } from "viem/chains";
+import { celo as celoMainnet } from "viem/chains";
 import { createConfig, http } from "wagmi";
 import { defineChain } from "viem";
+
+// Re-export for use in components
+export { celo as celoMainnet } from "viem/chains";
+export const celo = celoMainnet;
 
 const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID ?? "";
 
@@ -45,7 +49,8 @@ export const celoSepolia = defineChain({
   testnet: true,
 });
 
-export const celoChains = [celoSepolia, celo] as const;
+// Prioritize mainnet over testnet for production
+export const celoChains = [celo, celoSepolia] as const;
 
 const miniPayWallet = (options: Parameters<typeof walletConnectWallet>[0]) => {
   const wallet = walletConnectWallet(options);

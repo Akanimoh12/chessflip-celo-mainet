@@ -348,7 +348,7 @@ export const LobbyPage = () => {
                 {!isRegistered && (
                   <div className="sm:col-span-2 lg:col-span-4 text-center py-8 space-y-3">
                     <p className="text-lg text-primary/70">Create your username to start tracking your stats and earning rewards!</p>
-                    <Badge variant="brand" size="sm">Entry fee: 0.001 cUSD per match</Badge>
+                    <Badge variant="brand" size="sm">Entry fee: 0.001 cUSD per match (⚠️ Real money)</Badge>
                   </div>
                 )}
               </CardContent>
@@ -411,6 +411,11 @@ export const LobbyPage = () => {
                           ⚠️ First click: Approve cUSD (~1000 games). Second click: Start game
                         </p>
                       )}
+                      <div className="mt-3 p-2 bg-yellow-100 border-2 border-yellow-600 rounded-brutalist">
+                        <p className="text-xs font-bold text-yellow-700">
+                          ⚠️ MAINNET: Uses REAL cUSD. Only play with funds you can afford to lose.
+                        </p>
+                      </div>
                     </div>
                     <Button
                       variant="brand"

@@ -4,10 +4,12 @@ import { LobbyPage } from '@/pages/LobbyPage';
 import { GamePage } from '@/pages/GamePage';
 import { LeaderboardPage } from '@/pages/LeaderboardPage';
 import { NetworkDebug } from '@/components/NetworkDebug';
+import { NetworkWarning } from '@/components/NetworkWarning';
 
 function App() {
   return (
     <>
+      <NetworkWarning />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/lobby" element={<LobbyPage />} />

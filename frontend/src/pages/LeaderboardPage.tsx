@@ -12,6 +12,17 @@ import type { Address } from 'viem';
 
 const contractAddress = import.meta.env.VITE_CHESSFLIP_CONTRACT_ADDRESS as Address;
 
+// Deployment blocks for different networks
+const DEPLOYMENT_BLOCKS: Record<number, bigint> = {
+  42220: 53549328n,    // Celo Mainnet - Dec 11, 2025
+  11142220: 0n,        // Celo Sepolia Testnet
+};
+
+// Cache configuration
+const CACHE_KEY = 'chessflip_leaderboard_cache';
+const CACHE_DURATION = 60 * 1000; // 1 minute
+const MAX_LEADERBOARD_SIZE = 100; // Only show top 100 players
+
 interface PlayerData {
   address: Address;
   username: string;
@@ -22,23 +33,69 @@ interface PlayerData {
   winRate: number;
 }
 
+interface CachedLeaderboard {
+  players: PlayerData[];
+  timestamp: number;
+  lastBlock: string;
+}
+
 export function LeaderboardPage() {
   const publicClient = usePublicClient();
   const [players, setPlayers] = useState<PlayerData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [registeredAddresses, setRegisteredAddresses] = useState<Address[]>([]);
+  const [lastFetchedBlock, setLastFetchedBlock] = useState<bigint>(0n);
 
   
   // Get current block number - but don't watch continuously
   useBlockNumber({ watch: false });
 
-  // Fetch all PlayerRegistered events (only once on mount and manual refresh)
+  // Load from cache on mount for instant display
+  useEffect(() => {
+    const loadFromCache = () => {
+      try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const data: CachedLeaderboard = JSON.parse(cached);
+          const age = Date.now() - data.timestamp;
+          
+          if (age < CACHE_DURATION) {
+            console.log(`✅ Loaded cached leaderboard (${Math.floor(age / 1000)}s old)`);
+            setPlayers(data.players);
+            setLastFetchedBlock(BigInt(data.lastBlock));
+            setIsLoading(false);
+            return true;
+          }
+          console.log(`⏰ Cache expired (${Math.floor(age / 1000)}s old), fetching fresh data`);
+        }
+      } catch (error) {
+        console.error('Cache load error:', error);
+      }
+      return false;
+    };
+
+    // Try to show cached data immediately
+    if (!loadFromCache()) {
+      setIsLoading(true);
+    }
+  }, []);
+
+  // Fetch all PlayerRegistered events (with incremental updates)
   useEffect(() => {
     const fetchRegisteredPlayers = async () => {
       if (!publicClient || !contractAddress) return;
 
       try {
         setIsLoading(true);
+        
+        const chainId = await publicClient.getChainId();
+        const deploymentBlock = DEPLOYMENT_BLOCKS[chainId] || 0n;
+        const currentBlock = await publicClient.getBlockNumber();
+        
+        // Incremental update: only fetch new events since last fetch
+        const fromBlock = lastFetchedBlock > 0n ? lastFetchedBlock + 1n : deploymentBlock;
+        
+        console.log(`📊 Fetching events from block ${fromBlock} to ${currentBlock} (chain ${chainId})`);
         
         // Get PlayerRegistered events from contract deployment
         const logs = await publicClient.getLogs({
@@ -51,16 +108,21 @@ export function LeaderboardPage() {
               { name: 'username', type: 'string', indexed: false },
             ],
           },
-          fromBlock: 0n,
+          fromBlock: fromBlock,
           toBlock: 'latest',
         });
 
-        console.log('Found PlayerRegistered events:', logs.length);
+        console.log(`Found ${logs.length} new PlayerRegistered events`);
 
-        // Extract unique addresses
-        const addresses = [...new Set(logs.map(log => log.args.player as Address))];
-        console.log('Registered addresses:', addresses);
-        setRegisteredAddresses(addresses);
+        // Extract new unique addresses
+        const newAddresses = [...new Set(logs.map(log => log.args.player as Address))];
+        
+        // Merge with existing addresses (for incremental updates)
+        const allAddresses = [...new Set([...registeredAddresses, ...newAddresses])];
+        
+        console.log(`Total players: ${allAddresses.length} (+${newAddresses.length} new)`);
+        setRegisteredAddresses(allAddresses);
+        setLastFetchedBlock(currentBlock);
 
       } catch (error) {
         console.error('Error fetching registered players:', error);
@@ -68,11 +130,11 @@ export function LeaderboardPage() {
       }
     };
 
-    // Only fetch on initial mount
-    if (registeredAddresses.length === 0) {
+    // Fetch when we have no addresses or when explicitly refreshing
+    if (publicClient && registeredAddresses.length === 0 && isLoading) {
       fetchRegisteredPlayers();
     }
-  }, [publicClient, contractAddress]); // Removed blockNumber from dependencies
+  }, [publicClient, contractAddress, isLoading, registeredAddresses.length, lastFetchedBlock]);
 
   // Fetch player data for all registered addresses
   useEffect(() => {
@@ -148,11 +210,28 @@ export function LeaderboardPage() {
         const results = await Promise.all(playerDataPromises);
         const validPlayers = results.filter((p): p is PlayerData => p !== null);
         
-        console.log('Valid players:', validPlayers);
+        console.log(`Found ${validPlayers.length} valid players`);
         
-        // Sort by total points descending
+        // Sort by total points descending and take top 100 only
         validPlayers.sort((a, b) => b.totalPoints - a.totalPoints);
-        setPlayers(validPlayers);
+        const topPlayers = validPlayers.slice(0, MAX_LEADERBOARD_SIZE);
+        
+        console.log(`📈 Showing top ${topPlayers.length} of ${validPlayers.length} players`);
+        
+        setPlayers(topPlayers);
+        
+        // Cache the results
+        try {
+          const cacheData: CachedLeaderboard = {
+            players: topPlayers,
+            timestamp: Date.now(),
+            lastBlock: lastFetchedBlock.toString(),
+          };
+          localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+          console.log('💾 Leaderboard cached');
+        } catch (error) {
+          console.error('Cache save error:', error);
+        }
       } catch (error) {
         console.error('Error fetching players data:', error);
       } finally {
@@ -160,37 +239,19 @@ export function LeaderboardPage() {
       }
     };
 
-    fetchPlayersData();
-  }, [registeredAddresses, publicClient]); // Removed blockNumber
+    if (registeredAddresses.length > 0) {
+      fetchPlayersData();
+    }
+  }, [registeredAddresses, publicClient, lastFetchedBlock]);
 
-  const handleRefresh = async () => {
+  const handleRefresh = () => {
+    console.log('🔄 Manual refresh - clearing cache and fetching latest data');
+    // Clear cache
+    localStorage.removeItem(CACHE_KEY);
+    // Reset state to trigger full refresh
+    setLastFetchedBlock(0n);
+    setRegisteredAddresses([]);
     setIsLoading(true);
-    setRegisteredAddresses([]); // Clear to trigger re-fetch
-    
-    // Wait a bit then re-fetch
-    setTimeout(() => {
-      if (publicClient && contractAddress) {
-        publicClient.getLogs({
-          address: contractAddress,
-          event: {
-            type: 'event',
-            name: 'PlayerRegistered',
-            inputs: [
-              { name: 'player', type: 'address', indexed: true },
-              { name: 'username', type: 'string', indexed: false },
-            ],
-          },
-          fromBlock: 0n,
-          toBlock: 'latest',
-        }).then(logs => {
-          const addresses = [...new Set(logs.map(log => log.args.player as Address))];
-          setRegisteredAddresses(addresses);
-        }).catch(error => {
-          console.error('Error refreshing:', error);
-          setIsLoading(false);
-        });
-      }
-    }, 100);
   };
 
   const getMedalIcon = (rank: number) => {
@@ -218,7 +279,7 @@ export function LeaderboardPage() {
               </div>
               <h1 className="text-4xl md:text-5xl font-bold mb-3">Leaderboard</h1>
               <p className="text-lg text-primary/70 max-w-2xl mx-auto">
-                Top players ranked by total points earned. Compete to reach the top!
+                Top {MAX_LEADERBOARD_SIZE} players ranked by total points. Compete to reach the top!
               </p>
             </div>
             <Button

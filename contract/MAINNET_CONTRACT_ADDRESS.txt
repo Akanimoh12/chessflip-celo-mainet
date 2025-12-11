@@ -1,0 +1,101 @@
+# ChessFlip Mainnet Deployment
+
+## Deployment Information
+
+**Network**: Celo Mainnet (Chain ID: 42220)
+**Deployed At**: December 11, 2025
+**Deployer Address**: 0x58C25c26666B31241C67Cf7B9a82e325eB07c342
+
+## Contract Details
+
+**Contract Address**: `0xEb2b130c0846a2C183b56b49FE472e0D2a87f124`
+
+**Transaction Hash**: `0xfce4f49288eb5cba3bebb67910977dfd7d2e9cd9a99f4623798d23413c7c8ffe`
+
+**Block Number**: 53549328
+
+**Gas Used**: 1,793,111
+**Gas Price**: 25.001 gwei
+**Total Cost**: 0.044829568111 ETH (CELO)
+
+## Constructor Parameters
+
+- **cUSD Token**: 0x765DE816845861e75A25fCA122bb6898B8B1282a
+- **Owner**: 0x58C25c26666B31241C67Cf7B9a82e325eB07c342
+
+## Block Explorer Links
+
+- **CeloScan**: https://celoscan.io/address/0xEb2b130c0846a2C183b56b49FE472e0D2a87f124
+- **Blockscout**: https://celo.blockscout.com/address/0xEb2b130c0846a2C183b56b49FE472e0D2a87f124
+- **Transaction**: https://celoscan.io/tx/0xfce4f49288eb5cba3bebb67910977dfd7d2e9cd9a99f4623798d23413c7c8ffe
+
+## Verification Status
+
+⚠️ **Verification Note**: Initial verification failed due to API key rate limit. You can verify manually later using:
+
+```bash
+forge verify-contract 0xEb2b130c0846a2C183b56b49FE472e0D2a87f124 \
+  src/ChessFlip.sol:ChessFlip \
+  --chain-id 42220 \
+  --constructor-args $(cast abi-encode "constructor(address,address)" 0x765DE816845861e75A25fCA122bb6898B8B1282a 0x58C25c26666B31241C67Cf7B9a82e325eB07c342) \
+  --compiler-version 0.8.24
+```
+
+Or verify directly on CeloScan: https://celoscan.io/verifyContract
+
+## Next Steps
+
+### 1. Update Frontend Environment Variables
+
+Add to `/frontend/.env`:
+```
+VITE_CHESSFLIP_CONTRACT_ADDRESS=0xEb2b130c0846a2C183b56b49FE472e0D2a87f124
+VITE_DEFAULT_NETWORK=mainnet
+```
+
+### 2. Test Contract Functions
+
+Test with small amounts:
+- ✅ Register player
+- ✅ Approve cUSD (0.001 cUSD per game)
+- ✅ Start game
+- ✅ Submit game result
+- ✅ Claim points
+
+### 3. Security Checklist
+
+- [x] Contract deployed to mainnet
+- [x] Owner set correctly
+- [ ] Verify contract on CeloScan (retry after rate limit)
+- [ ] Test all functions with real cUSD
+- [ ] Monitor first transactions closely
+- [ ] Have pause mechanism ready (owner function)
+
+## Contract Functions
+
+**Player Functions**:
+- `registerPlayer(string username)` - Free (gas only)
+- `startGame()` - 0.001 cUSD entry fee
+- `submitGameResult(uint256 gameId, GameOutcome outcome, uint8 matchedPairs, uint8 livesRemaining)` - Free (gas only)
+- `claimPoints(uint256 gameId)` - Free (gas only)
+
+**View Functions**:
+- `getPlayer(address account)` - Returns player stats
+- `getGame(uint256 gameId)` - Returns game details
+
+**Owner Functions** (0x58C25c26666B31241C67Cf7B9a82e325eB07c342):
+- `pause()` / `unpause()` - Emergency stop
+- `withdraw(address to, uint256 amount)` - Withdraw accumulated fees
+
+## Important Notes
+
+⚠️ **REAL MONEY**: This is Celo Mainnet - all transactions use real cUSD
+⚠️ **Entry Fee**: 0.001 cUSD per game (approximately $0.001 USD)
+⚠️ **Test Thoroughly**: Test with small amounts before announcing to users
+⚠️ **Owner Control**: Keep private key secure - it controls pause and withdrawal
+
+## Support
+
+- Celo Discord: https://discord.gg/celo
+- CeloScan: https://celoscan.io
+- Celo Docs: https://docs.celo.org

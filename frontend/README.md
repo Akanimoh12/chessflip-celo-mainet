@@ -1,11 +1,49 @@
-# React + TypeScript + Vite
+# ChessFlip Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ChessFlip is a blockchain-based memory matching game built on Celo Mainnet. This frontend is built with React, TypeScript, Vite, wagmi v2, and RainbowKit.
 
-Currently, two official plugins are available:
+## ⚠️ IMPORTANT: Mainnet Deployment
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This application runs on **Celo Mainnet** and uses **REAL cUSD**. Always exercise caution when testing and deploying.
+
+## 🚀 Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+## 🔧 Environment Variables
+
+Create a `.env` file:
+
+```env
+VITE_DEFAULT_NETWORK=mainnet
+VITE_CHESSFLIP_CONTRACT_ADDRESS=0xEb2b130c0846a2C183b56b49FE472e0D2a87f124
+VITE_WALLETCONNECT_PROJECT_ID=your_project_id_here
+```
+
+**Networks:**
+- `mainnet` - Celo Mainnet (REAL money)
+- `sepolia` - Celo Sepolia Testnet (for testing)
+
+## 📦 Tech Stack
+
+- **Framework:** React 18 + TypeScript + Vite
+- **Blockchain:** wagmi v2 + viem + RainbowKit
+- **Styling:** TailwindCSS + Brutalist Design System
+- **Routing:** React Router v6
+- **State:** React Hooks
+- **Notifications:** React Hot Toast
 
 ## React Compiler
 

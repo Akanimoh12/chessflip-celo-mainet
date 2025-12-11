@@ -169,6 +169,11 @@ export const RegistrationModal = ({
           </CardHeader>
 
           <CardContent className="space-y-6 pt-6">
+            <div className="p-3 bg-yellow-100 border-3 border-yellow-600 rounded-brutalist">
+              <p className="text-sm font-bold text-yellow-700">
+                ⚠️ MAINNET: This uses REAL cUSD on Celo Mainnet
+              </p>
+            </div>
             <p className="text-sm text-primary/70">
               Choose a unique username to start playing. This cannot be changed later.
             </p>
@@ -244,12 +249,12 @@ export const RegistrationModal = ({
             {hash && (
               <div className="text-xs text-primary/60 text-center pt-2 border-t-2 border-primary/20">
                 <a
-                  href={`https://alfajores.celoscan.io/tx/${hash}`}
+                  href={`https://celoscan.io/tx/${hash}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-brand transition-colors underline"
                 >
-                  View transaction →
+                  View transaction on CeloScan →
                 </a>
               </div>
             )}

@@ -10,18 +10,25 @@ Play with cUSD on MiniPay, Valora, or any Celo wallet. No email signup required.
 
 **Live App:** [https://chessflip-celo.vercel.app/](https://chessflip-celo.vercel.app/)
 
-**Network:** Celo Sepolia Testnet  
-**Contract:** [`0xEb2b130c0846a2C183b56b49FE472e0D2a87f124`](https://celo-sepolia.blockscout.com/address/0xEb2b130c0846a2C183b56b49FE472e0D2a87f124)
+**Network:** 🟢 **Celo Mainnet** (REAL MONEY)  
+**Contract:** [`0xEb2b130c0846a2C183b56b49FE472e0D2a87f124`](https://celoscan.io/address/0xEb2b130c0846a2C183b56b49FE472e0D2a87f124)
+
+⚠️ **IMPORTANT:** This app uses **REAL cUSD** on Celo Mainnet. Only use funds you can afford to lose.
 
 ---
 
 ## 🚀 How to Play on MiniPay
 
 ### 1. Get Setup (First Time Only)
-1. Download **Opera Mini** or **Valora** app on your phone
-2. Open **MiniPay** (built into Opera Mini) or **Valora** wallet
-3. Get free test cUSD from [Celo Faucet](https://faucet.celo.org/alfajores) - switch to Sepolia testnet
+1. Download **Opera Mini** (with MiniPay) or **Valora** app on your phone
+2. Open your wallet and ensure you're on **Celo Mainnet**
+3. Get **REAL cUSD** from:
+   - Buy directly in MiniPay or Valora
+   - Bridge from another network
+   - Exchange like Binance, Coinbase
 4. Open [https://chessflip-celo.vercel.app/](https://chessflip-celo.vercel.app/) in MiniPay browser
+
+⚠️ **This is MAINNET - use real money carefully!**
 
 ### 2. Register & Play
 1. **Connect Wallet** - Tap "Connect Wallet" and approve connection

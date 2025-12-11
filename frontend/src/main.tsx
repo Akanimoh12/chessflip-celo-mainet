@@ -48,9 +48,8 @@ root.render(
   </React.StrictMode>,
 );
 
-// CRITICAL: Notify Farcaster that app is ready to display
-// Without this, the MiniApp will show infinite loading
-setTimeout(() => {
-  initializeFarcasterSDK();
-}, 100);
+// CRITICAL: Call sdk.actions.ready() to hide Farcaster splash screen
+// This must be called after the app renders to avoid infinite loading
+// The SDK handles whether we're in a MiniApp context automatically
+initializeFarcasterSDK().catch(console.error);
 

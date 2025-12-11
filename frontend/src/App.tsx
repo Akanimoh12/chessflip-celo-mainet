@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { sdk } from '@farcaster/miniapp-sdk';
 import { LandingPage } from '@/pages/LandingPage';
 import { LobbyPage } from '@/pages/LobbyPage';
 import { GamePage } from '@/pages/GamePage';
@@ -18,6 +19,18 @@ function App() {
     if (isInMiniApp()) {
       console.log('🎯 Running in Farcaster MiniApp');
     }
+
+    // Fallback: Ensure ready() is called when App component mounts
+    // This provides a second opportunity if main.tsx call was missed
+    const callReady = async () => {
+      try {
+        await sdk.actions.ready();
+        console.log('✅ sdk.actions.ready() called from App component');
+      } catch (error) {
+        console.log('ℹ️ sdk.actions.ready() already called or not needed');
+      }
+    };
+    callReady();
   }, []);
 
   return (

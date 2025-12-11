@@ -33,18 +33,32 @@ export const isInMiniApp = (): boolean => {
 /**
  * Initialize Farcaster SDK and notify that app is ready
  * Call this after your app has finished loading
+ * 
+ * IMPORTANT: Always call sdk.actions.ready() to hide splash screen
  */
 export const initializeFarcasterSDK = async () => {
   try {
+    console.log("🎯 Initializing Farcaster MiniApp SDK...");
+    
+    // CRITICAL: Always call ready() to hide splash screen
+    // The SDK will handle whether we're in a MiniApp context or not
+    await sdk.actions.ready();
+    
+    console.log("✅ Farcaster SDK ready() called successfully");
+    
     if (isInMiniApp()) {
-      console.log("🎯 Initializing Farcaster MiniApp SDK...");
-      await sdk.actions.ready();
-      console.log("✅ Farcaster SDK initialized successfully");
+      console.log("✅ Running in Farcaster MiniApp environment");
     } else {
-      console.log("ℹ️ Not running in Farcaster MiniApp - SDK initialization skipped");
+      console.log("ℹ️ Running outside Farcaster (normal web browser)");
     }
   } catch (error) {
     console.error("❌ Failed to initialize Farcaster SDK:", error);
+    // Even if there's an error, try to call ready() to avoid infinite splash
+    try {
+      await sdk.actions.ready();
+    } catch (readyError) {
+      console.error("❌ Failed to call ready():", readyError);
+    }
   }
 };
 
